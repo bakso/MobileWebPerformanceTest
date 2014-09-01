@@ -17,7 +17,7 @@
                BlueprintIdentifier = "84E4C4BC19975A5300DA64B2"
                BuildableName = "test2.app"
                BlueprintName = "test2"
-               ReferencedContainer = "container:test2.xcodeproj">
+               ReferencedContainer = "container:MobileWebPerformanceTest.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "84E4C4DD19975A5300DA64B2"
                BuildableName = "test2Tests.xctest"
                BlueprintName = "test2Tests"
-               ReferencedContainer = "container:test2.xcodeproj">
+               ReferencedContainer = "container:MobileWebPerformanceTest.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -45,7 +45,7 @@
             BlueprintIdentifier = "84E4C4BC19975A5300DA64B2"
             BuildableName = "test2.app"
             BlueprintName = "test2"
-            ReferencedContainer = "container:test2.xcodeproj">
+            ReferencedContainer = "container:MobileWebPerformanceTest.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -64,7 +64,7 @@
             BlueprintIdentifier = "84E4C4BC19975A5300DA64B2"
             BuildableName = "test2.app"
             BlueprintName = "test2"
-            ReferencedContainer = "container:test2.xcodeproj">
+            ReferencedContainer = "container:MobileWebPerformanceTest.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -82,7 +82,7 @@
             BlueprintIdentifier = "84E4C4BC19975A5300DA64B2"
             BuildableName = "test2.app"
             BlueprintName = "test2"
-            ReferencedContainer = "container:test2.xcodeproj">
+            ReferencedContainer = "container:MobileWebPerformanceTest.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
