@@ -95,6 +95,7 @@
     [_webview loadRequest:request];
     
     int seconds = self.duration;
+    int _seconds = self.duration;
     float perSecond = self.space;
     __block int timeout = seconds*100; //倒计时时间
     __block int capturePerSecond = perSecond*100;
@@ -117,9 +118,12 @@
                 //设置界面的按钮显示 根据自己需求设置
                 label.text = strTime;
                 if(needCapture){
+                    int pass = _seconds*100-timeout;
+                    int passSeconds = pass/100;
+                    int passMs = pass % 100;
                     UIImage* image = [self captureScreen:_webview];
-                    
-                    [captureImages addObject:image];
+                    NSDictionary* obj = @{@"image": image, @"label": [NSString stringWithFormat:@"%.2d:%.2d",passSeconds, passMs]};
+                    [captureImages addObject:obj];
                 }
             });
             timeout--;

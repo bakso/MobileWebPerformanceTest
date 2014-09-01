@@ -34,10 +34,10 @@
     int count = resultImages.count;
     // Do any additional setup after loading the view.
     CGFloat viewWidth = 320;
-    CGFloat viewHeight = 230;
+    CGFloat viewHeight = 240;
+    CGFloat singleViewWidth = 180;
     CGFloat imageViewHeight = 210;
-    CGFloat singleViewWidth = 170;
-    CGFloat imageContentTop = 10;
+    CGFloat imageContentTop = 25;
     
     NSLog(@"scrollView x,y,w,h: %d,%d,%f,%f", 0, 50, viewWidth, viewHeight);
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 50, viewWidth, viewHeight)];
@@ -46,22 +46,24 @@
     scrollView.delegate = self;
     [scrollView setBackgroundColor:[UIColor lightGrayColor]];
     
-    self.scrollView.contentSize = CGSizeMake(viewWidth*count, viewHeight);
+    self.scrollView.contentSize = CGSizeMake(singleViewWidth*count, viewHeight);
     
 //    self.scrollView.pagingEnabled = YES;
     self.scrollView.showsHorizontalScrollIndicator = YES;
     
     CGFloat left = 0;
     for (NSUInteger i = 0; i <count; i++) {
-        UIImage* image = [resultImages objectAtIndex:i];
+        NSDictionary* obj = [resultImages objectAtIndex:i];
+        UIImage* image = [obj objectForKey: @"image"];
         CGFloat scale = image.size.height / imageViewHeight;
-        
         UIView* view = [[UIView alloc] initWithFrame:CGRectMake(left, 0, singleViewWidth, viewHeight)];
-        
-        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, imageContentTop, image.size.width/scale, imageViewHeight)];
-        
+        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, imageContentTop, image.size.width/scale, imageViewHeight)];
         [imageView setImage:image];
         [view addSubview:imageView];
+        
+        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 100, imageContentTop)];
+        [view addSubview:label];
+        label.text = [obj objectForKey: @"label"];
         
         
         [scrollView addSubview:view];
