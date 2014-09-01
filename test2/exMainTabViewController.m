@@ -41,7 +41,6 @@
     tabBarItem0.image = image0;
     tabBarItem0.title = @"Run Task";
     
-    
     UITabBarItem *tabBarItem1 = [tabbar.items objectAtIndex:1];
     UIImage *image2 = [UIImage imageNamed:@"servermode.png"];
     tabBarItem1.image = image2;
@@ -55,7 +54,6 @@
     
     [self syncDurationLabel];
     [self syncSpaceLabel];
-    
 }
 
 -(void) syncDurationLabel{
@@ -76,14 +74,13 @@
    [self syncSpaceLabel];
 }
 
-
 - (void) runTest{
     UIStoryboard *board=[UIStoryboard storyboardWithName:@"Main"bundle:nil];
     exRunnerViewController *runnerView =[board instantiateViewControllerWithIdentifier:@"runner"];
     runnerView.url = _urlTextField.text;
     runnerView.duration = (int)self.duration.value;
-    //TODO:小数点后一位
-    runnerView.space = self.space.value;
+    NSString* formatSpace = [NSString stringWithFormat:@"%.1f", self.space.value];
+    runnerView.space = [formatSpace floatValue];
     [self presentViewController:runnerView animated:YES completion:nil];
 }
 

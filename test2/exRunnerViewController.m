@@ -61,6 +61,8 @@
     self.automaticallyAdjustsScrollViewInsets = false; //否则webview会自动留白边
     
     _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, STATUSBAR_HEIGHT, _windowSize.width, _windowSize.height-STATUSBAR_HEIGHT)];
+    _webview.delegate = self;
+    
     [self.view addSubview:_webview];
     
     UIView* actionBar = [[UIView alloc]initWithFrame:CGRectMake(0, STATUSBAR_HEIGHT, _windowSize.width, 30)];
@@ -81,6 +83,20 @@
     
     [self.view addSubview:actionBar];
     [self startTask];
+}
+
+- (void) webViewDidStartLoad:(UIWebView *)webView{
+    [_webview stringByEvaluatingJavaScriptFromString:@""];
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    NSString* rurl=[[request URL] absoluteString];
+    if ([rurl hasPrefix:@"mwpt://"]) {
+        //如果是自己定义的协议, 再截取协议中的方法和参数, 判断无误后在这里手动调用oc方法
+    }
+    
+    return true;
 }
 
 
@@ -114,17 +130,17 @@
             int ms = timeout % 100;
             Boolean needCapture = (timeout % capturePerSecond)==0;
             NSString *strTime = [NSString stringWithFormat:@"%.2d:%.2d",seconds, ms];
+            if(needCapture){
+                int pass = _seconds*100-timeout;
+                int passSeconds = pass/100;
+                int passMs = pass % 100;
+                UIImage* image = [self captureScreen:_webview];
+                NSDictionary* obj = @{@"image": image, @"label": [NSString stringWithFormat:@"%.2d:%.2d",passSeconds, passMs]};
+                [captureImages addObject:obj];
+            }
             dispatch_async(dispatch_get_main_queue(), ^{
                 //设置界面的按钮显示 根据自己需求设置
                 label.text = strTime;
-                if(needCapture){
-                    int pass = _seconds*100-timeout;
-                    int passSeconds = pass/100;
-                    int passMs = pass % 100;
-                    UIImage* image = [self captureScreen:_webview];
-                    NSDictionary* obj = @{@"image": image, @"label": [NSString stringWithFormat:@"%.2d:%.2d",passSeconds, passMs]};
-                    [captureImages addObject:obj];
-                }
             });
             timeout--;
         }

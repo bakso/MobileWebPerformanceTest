@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface exRunnerViewController : UIViewController
+@interface exRunnerViewController : UIViewController <UIWebViewDelegate>
 @property (nonatomic, strong) IBOutlet UIWebView *webview;
 @property (nonatomic, strong) NSString *url;
 @property (nonatomic) int duration;

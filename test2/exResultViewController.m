@@ -64,10 +64,7 @@
         UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 100, imageContentTop)];
         [view addSubview:label];
         label.text = [obj objectForKey: @"label"];
-        
-        
         [scrollView addSubview:view];
-        
         left += (singleViewWidth);
     }
 }
