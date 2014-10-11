@@ -15,4 +15,8 @@
 @property (weak, nonatomic) IBOutlet UISlider *space;
 @property (weak, nonatomic) IBOutlet UILabel *durationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *spaceLabel;
+@property NSDictionary* results;
+
+-(void) endTestWithResults: (NSMutableArray*) results;
 @end
+

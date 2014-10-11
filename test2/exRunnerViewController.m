@@ -1,3 +1,6 @@
+
+
+
 //
 //  exRunnerViewController.m
 //  test2
@@ -10,12 +13,25 @@
 #import "exRunnerViewController.h"
 #import "exResultViewController.h"
 
+
 @interface exRunnerViewController ()
 @property CGSize windowSize;
 @property UILabel* label;
 @property UIButton* btn;
-@property NSMutableArray* captureImages;
+
+
 @end
+
+
+//@implementation NSString
+//- (NSString *)stringByDecodingURLFormat
+//{
+//    NSString *result = [(NSString *)self stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+//    result = [result stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    return result;
+//}
+//@end
+
 
 @implementation exRunnerViewController
 
@@ -24,11 +40,13 @@
 @synthesize label;
 @synthesize btn;
 @synthesize captureImages;
+@synthesize parentViewCtrl;
 
 - (void)viewDidLoad
 {
     
     [super viewDidLoad];
+    
     
 //    self.navigationController.navigationBar.barTintColor = [UIColor grayColor];
 //    self.navigationController.navigationBar.translucent = NO;
@@ -86,14 +104,41 @@
 }
 
 - (void) webViewDidStartLoad:(UIWebView *)webView{
-    [_webview stringByEvaluatingJavaScriptFromString:@""];
+    NSString* path = [[NSBundle mainBundle] pathForResource:@"script"
+                                                     ofType:@"js"];
+    NSString* content = [NSString stringWithContentsOfFile:path
+                                                  encoding:NSUTF8StringEncoding
+                                                     error:NULL];    
+    [_webview stringByEvaluatingJavaScriptFromString:content];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     NSString* rurl=[[request URL] absoluteString];
     if ([rurl hasPrefix:@"mwpt://"]) {
-        //如果是自己定义的协议, 再截取协议中的方法和参数, 判断无误后在这里手动调用oc方法
+        NSLog(@"ssss%@",rurl);
+        NSURL *url = [NSURL URLWithString:rurl];
+        NSString *query = [url query];
+        NSMutableDictionary *queryStringDictionary = [[NSMutableDictionary alloc] init];
+        NSArray *urlComponents = [query componentsSeparatedByString:@"&"];
+        for (NSString *keyValuePair in urlComponents)
+        {
+            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+            NSString *key = [pairComponents objectAtIndex:0];
+            NSString *value = [pairComponents objectAtIndex:1];
+            
+            [queryStringDictionary setObject:value forKey:key];
+        }
+
+        NSString *rawResult = [queryStringDictionary objectForKey:@"testResult"];
+        NSString *decodedString = [rawResult stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+        
+        NSData* jsonData = [decodedString dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *perfResult = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:nil];
+        NSString *onloadTime = [perfResult objectForKey:@"onloadTime"];
+        
+        _onloadTime = onloadTime;
+        
     }
     
     return true;
@@ -101,13 +146,23 @@
 
 
 - (void) onAbortClick:(id)sender{
-    [self dismissViewControllerAnimated:true completion:nil];
+    //[self dismissViewControllerAnimated:true completion:nil];
+    [self endTask];
 }
 
 - (void) startTask
 {
     
-    NSURLRequest *request =[NSURLRequest requestWithURL:[NSURL URLWithString:_url]];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitDiskImageCacheEnabled"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    NSURLRequest *request =[NSURLRequest requestWithURL:[NSURL URLWithString:_url] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20.0];
+    
+    [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
+    
     [_webview loadRequest:request];
     
     int seconds = self.duration;
@@ -121,24 +176,37 @@
     dispatch_source_set_event_handler(_timer, ^{
         if(timeout<=0){ //倒计时结束，关闭
             dispatch_source_cancel(_timer);
+            //最后一张图
+            int pass = _seconds*100-timeout;
+            int passSeconds = pass/100;
+            int passMs = pass % 100;
+            UIImage* image = [self captureScreen:_webview];
+            NSDictionary* obj = @{@"image": image, @"label": [NSString stringWithFormat:@"%.2d''%.2d",passSeconds, passMs]};
+            [captureImages addObject:obj];
+            
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self endTaskWithImages:captureImages];
                 NSLog(@"capture image number:%d", captureImages.count);
+                [self endTask];
+                
             });
         }else{
             int seconds = timeout / 100;
             int ms = timeout % 100;
             Boolean needCapture = (timeout % capturePerSecond)==0;
             NSString *strTime = [NSString stringWithFormat:@"%.2d:%.2d",seconds, ms];
+            
+            int pass,passSeconds,passMs;
             if(needCapture){
-                int pass = _seconds*100-timeout;
-                int passSeconds = pass/100;
-                int passMs = pass % 100;
-                UIImage* image = [self captureScreen:_webview];
-                NSDictionary* obj = @{@"image": image, @"label": [NSString stringWithFormat:@"%.2d:%.2d",passSeconds, passMs]};
-                [captureImages addObject:obj];
+                pass = _seconds*100-timeout;
+                passSeconds = pass/100;
+                passMs = pass % 100;
             }
             dispatch_async(dispatch_get_main_queue(), ^{
+                if(needCapture){
+                    UIImage* image = [self captureScreen:_webview];
+                    NSDictionary* obj = @{@"image": image, @"label": [NSString stringWithFormat:@"%.2d''%.2d",passSeconds, passMs]};
+                    [captureImages addObject:obj];
+                }
                 //设置界面的按钮显示 根据自己需求设置
                 label.text = strTime;
             });
@@ -148,20 +216,25 @@
     dispatch_resume(_timer);
 }
 
--(void) endTaskWithImages:(NSMutableArray*)images{
-    UIStoryboard *board=[UIStoryboard storyboardWithName:@"Main"bundle:nil];
-    exResultViewController *resultViewController =[board instantiateViewControllerWithIdentifier:@"result"];
-    resultViewController.resultImages = captureImages;
+-(void) endTask{
     
-    [self presentViewController:resultViewController animated:YES completion:nil];
-    [self dismissViewControllerAnimated: NO completion:nil];
+    
+//    
+//    UIStoryboard *board=[UIStoryboard storyboardWithName:@"Main"bundle:nil];
+//    exResultViewController *resultViewController =[board instantiateViewControllerWithIdentifier:@"result"];
+//    resultViewController.resultImages = captureImages;
+
+    
+    //[self presentViewController:resultViewController animated:YES completion:nil];
+    [self dismissViewControllerAnimated: YES completion:^{
+        NSDictionary *result = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                captureImages, @"captureImages",
+                                _onloadTime, @"onloadTime",
+                                nil];        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"taskRunEnd" object:result];
+    }];
 }
 
-- (void) tick{
-    NSDate *date = [NSDate date];
-    NSLog(@"%f", date.timeIntervalSince1970);
-    
-}
 
 -(UIImage*)captureScreen:(UIView*) viewToCapture{
     UIGraphicsBeginImageContext(viewToCapture.bounds.size);

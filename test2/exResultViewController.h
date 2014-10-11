@@ -10,6 +10,8 @@
 
 @interface exResultViewController : UIViewController
 
-@property(strong, nonatomic) NSMutableArray* resultImages;
+@property(nonatomic, strong) NSMutableArray* resultImages;
+@property(nonatomic, strong) NSString* onloadTime;
+@property (nonatomic, strong) IBOutlet UILabel *onloadTimeLabel;
 
 @end

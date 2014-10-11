@@ -8,11 +8,12 @@
 
 #import "exMainTabViewController.h"
 #import "exRunnerViewController.h"
-
+#import "exResultViewController.h"
 
 @implementation exMainTabViewController
 
 @synthesize startButton = _startButton;
+@synthesize results;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -26,11 +27,10 @@
 
 - (void)viewDidLoad
 {
+    
     self.urlTextField.delegate = self;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    NSLog(@"xxx");
-    
     _startButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _startButton.layer.borderWidth = 1;
     _startButton.layer.cornerRadius = 5.0;
@@ -54,6 +54,9 @@
     
     [self syncDurationLabel];
     [self syncSpaceLabel];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(endTestWithResults:) name:@"taskRunEnd" object:nil];
+    
 }
 
 -(void) syncDurationLabel{
@@ -74,14 +77,30 @@
    [self syncSpaceLabel];
 }
 
+
 - (void) runTest{
     UIStoryboard *board=[UIStoryboard storyboardWithName:@"Main"bundle:nil];
     exRunnerViewController *runnerView =[board instantiateViewControllerWithIdentifier:@"runner"];
     runnerView.url = _urlTextField.text;
+    runnerView.parentViewCtrl = self;    
     runnerView.duration = (int)self.duration.value;
     NSString* formatSpace = [NSString stringWithFormat:@"%.1f", self.space.value];
     runnerView.space = [formatSpace floatValue];
     [self presentViewController:runnerView animated:YES completion:nil];
+}
+
+-(void) endTestWithResults:(NSNotification *) obj{
+
+    UIStoryboard *board=[UIStoryboard storyboardWithName:@"Main"bundle:nil];
+    exResultViewController *resultViewController =[board instantiateViewControllerWithIdentifier:@"result"];
+    id result = [obj object];
+    resultViewController.resultImages = [result objectForKey:@"captureImages"];
+    resultViewController.onloadTime = [result objectForKey:@"onloadTime"];
+    //UINavigationController* navCtrl = [[UINavigationController alloc] initWithRootViewController:resultViewController];
+    
+    [self.navigationController pushViewController:resultViewController animated:YES];
+    
+    //[self presentViewController:navCtrl animated:YES completion:nil];
 }
 
 - (IBAction)onClick:(id)sender {
@@ -89,8 +108,8 @@
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [textField resignFirstResponder];
-    [self runTest];
+    //[textField resignFirstResponder];
+    //[self runTest];
     return YES;
 }
 
