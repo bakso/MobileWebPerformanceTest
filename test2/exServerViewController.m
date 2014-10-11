@@ -8,7 +8,7 @@
 
 #import "exServerViewController.h"
 #import "GCDWebServerURLEncodedFormRequest.h"
-
+#import "exRunnerViewController.h"
 
 @interface exServerViewController ()
 @end
@@ -18,43 +18,78 @@
 @synthesize serverStartAt;
 @synthesize address;
 
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+
 - (IBAction)onClick:(id)sender {
     UIButton *resultButton = (UIButton *)sender;
+    id this = self;
     
     if([resultButton.titleLabel.text isEqualToString:@"Start"]){
         if(webServer == nil){
             webServer = [[GCDWebServer alloc] init];
             
             
-            [webServer addGETHandlerForBasePath:@"/" directoryPath:NSHomeDirectory() indexFilename:nil cacheAge:3600 allowRangeRequests:YES];
-//            [webServer addHandlerForMethod:@"GET"
-//                                      path:@"/"
-//                              requestClass:[GCDWebServerRequest class]
-//                              processBlock:^GCDWebServerResponse *(GCDWebServerRequest* request) {
-//                                  
-//                                  NSString* html = @" \
-//                                  <html><body> \
-//                                  <form name=\"input\" action=\"/\" method=\"post\" enctype=\"application/x-www-form-urlencoded\"> \
-//                                  Value: <input type=\"text\" name=\"value\"> \
-//                                  <input type=\"submit\" value=\"Submit\"> \
-//                                  </form> \
-//                                  </body></html> \
-//                                  ";
-//                                  return [GCDWebServerDataResponse responseWithHTML:html];
-//                                  
-//                              }];
+            NSString *documentRoot = [NSHomeDirectory()
+                                      stringByAppendingPathComponent:@"test2.app/webui/"];
             
+            [webServer addGETHandlerForBasePath:@"/" directoryPath:documentRoot indexFilename:@"index.html" cacheAge:0 allowRangeRequests:YES];
             
             
             [webServer addHandlerForMethod:@"POST"
                                       path:@"/"
                               requestClass:[GCDWebServerURLEncodedFormRequest class]
-                              processBlock:^GCDWebServerResponse *(GCDWebServerRequest* request) {
+                              asyncProcessBlock:^(GCDWebServerRequest* request, GCDWebServerCompletionBlock completionBlock) {
                                   
-                                  NSString* value = [[(GCDWebServerURLEncodedFormRequest*)request arguments] objectForKey:@"value"];
-                                  NSString* html = [NSString stringWithFormat:@"<html><body><p>%@</p></body></html>", value];
-                                  return [GCDWebServerDataResponse responseWithHTML:html];
+                                  NSDictionary *queryString = [(GCDWebServerURLEncodedFormRequest*)request arguments];
                                   
+                                  NSString* url = [queryString objectForKey:@"url"];
+                                  NSString* interval = [queryString objectForKey:@"interval"];
+                                  NSString* duration = [queryString objectForKey:@"duration"];
+                                  
+                                  [this runTestWithUrl: url interval:[interval floatValue] duration:[duration intValue]];
+                                  
+                                  [[NSNotificationCenter defaultCenter] addObserverForName:@"webTaskRunEnd" object:nil queue:nil usingBlock:^(NSNotification* obj){
+                                      
+                                      id res = [obj object];
+                                      NSString *onloadTime = [res objectForKey:@"onloadTime"];
+                                      
+                                      NSMutableDictionary *result = [[NSMutableDictionary alloc] initWithObjectsAndKeys:onloadTime, @"onloadTime", nil];
+                                      
+                                      NSMutableArray *images = [[NSMutableArray alloc] init];
+                                      
+                                      NSArray *orginImages = [res objectForKey:@"captureImages"];
+                                      
+                                      for(NSInteger i = 0; i < orginImages.count; i++){
+                                          NSDictionary *originImg = [orginImages objectAtIndex:i];
+                                          
+                                          UIImage *uiimage = [originImg objectForKey:@"image"];
+                                          NSString *base64Image = [UIImagePNGRepresentation(uiimage) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength ];
+                                          NSString *label = [originImg objectForKey:@"label"];
+                                          
+                                          NSDictionary *img = [[NSDictionary alloc] initWithObjectsAndKeys:base64Image, @"image",
+                                              label,  @"label", nil];
+                                          
+                                          [images addObject:img];
+                                      }
+                                      
+                                      [result setObject:images forKey:@"captureImages"];
+                                      
+                                      GCDWebServerDataResponse* response = [GCDWebServerDataResponse responseWithJSONObject:result];
+                                      
+                                      completionBlock(response);
+                                  }];
+                                  
+                                  //[formatSpace floatValue]
                               }];
         }
         
@@ -76,13 +111,13 @@
     }
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+- (void) runTestWithUrl:(NSString *)url interval:(float)interval duration:(int)duration{
+    UIStoryboard *board=[UIStoryboard storyboardWithName:@"Main"bundle:nil];
+    exRunnerViewController *runnerView =[board instantiateViewControllerWithIdentifier:@"runner"];
+    runnerView.url = url;
+    runnerView.duration = duration;
+    runnerView.space = interval;
+    [self presentViewController:runnerView animated:YES completion:nil];
 }
 
 - (void)viewDidLoad

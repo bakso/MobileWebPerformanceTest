@@ -230,8 +230,15 @@
         NSDictionary *result = [[NSDictionary alloc] initWithObjectsAndKeys:
                                 captureImages, @"captureImages",
                                 _onloadTime, @"onloadTime",
-                                nil];        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"taskRunEnd" object:result];
+                                nil];
+        
+        
+        if(parentViewCtrl != nil){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"taskRunEnd" object:result];
+        }else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"webTaskRunEnd" object:result];
+        }
+       
     }];
 }
 
