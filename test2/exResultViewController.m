@@ -52,7 +52,9 @@
     //UIBarButtonItem* backBtn = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(back)];
     self.navigationItem.leftBarButtonItem.title = @"Back";
     
-    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.bounds.size.height, viewWidth, viewHeight)];
+    NSLog(@"%f", self.navigationController.navigationBar.bounds.size.height);
+    
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, viewWidth, viewHeight)];
     
     scrollView.delegate = self;
     [scrollView setBackgroundColor:[UIColor lightGrayColor]];
@@ -84,14 +86,17 @@
     
     
     topScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    [topScrollView setContentSize:CGSizeMake(320, viewHeight+self.titleLabel.frame.size.height)];
+    [topScrollView setContentSize:CGSizeMake(320, viewHeight+72)];
     [topScrollView addSubview:scrollView];
     [self.view addSubview:topScrollView];
     
+    _domreadyTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(txMgLeft, viewHeight,  200, 36)];
+    _domreadyTimeLabel.text = [NSString stringWithFormat:@"DOM Ready Time: %@ms", _domreadyTime];
+    [topScrollView addSubview:_domreadyTimeLabel];
     
-    _onloadTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(txMgLeft, viewHeight+self.navigationController.navigationBar.bounds.size.height+50,  200, 36)];
+    _onloadTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(txMgLeft, viewHeight+36,  200, 36)];
     _onloadTimeLabel.text = [NSString stringWithFormat:@"Onload Time: %@ms", _onloadTime];
-    [self.view addSubview:_onloadTimeLabel];
+    [topScrollView addSubview:_onloadTimeLabel];
 }
 
 - (void) back{
@@ -104,7 +109,7 @@
 
 
 -(void) viewDidAppear:(BOOL)animated{
-    [topScrollView setFrame:CGRectMake(0, 50, 320, self.view.window.bounds.size.height-50)];
+    [topScrollView setFrame:CGRectMake(0, 0, 320, self.view.window.bounds.size.height-50)];
 //    btmBar = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.window.bounds.size.height-btmHeight, self.view.window.bounds.size.width, btmHeight)];
 //    
 //    

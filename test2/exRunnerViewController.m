@@ -78,10 +78,19 @@
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.automaticallyAdjustsScrollViewInsets = false; //否则webview会自动留白边
     
+    WKWebViewConfiguration *theConfiguration =
+    [[WKWebViewConfiguration alloc] init];
+    [theConfiguration.userContentController
+     addScriptMessageHandler:self name:@"MWPT"];
+    
+    _wkwebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, STATUSBAR_HEIGHT, _windowSize.width, _windowSize.height-STATUSBAR_HEIGHT) configuration:theConfiguration];
+    _wkwebView.navigationDelegate = self;
+    
     _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, STATUSBAR_HEIGHT, _windowSize.width, _windowSize.height-STATUSBAR_HEIGHT)];
     _webview.delegate = self;
     
-    [self.view addSubview:_webview];
+    //[self.view addSubview:_webview];
+    [self.view addSubview:_wkwebView];
     
     UIView* actionBar = [[UIView alloc]initWithFrame:CGRectMake(0, STATUSBAR_HEIGHT, _windowSize.width, 30)];
     actionBar.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];    
@@ -101,6 +110,15 @@
     
     [self.view addSubview:actionBar];
     [self startTask];
+}
+
+- (void)webView:(WKWebView *)wkwebview didCommitNavigation:(WKNavigation *)navigation{
+    NSString* path = [[NSBundle mainBundle] pathForResource:@"script"
+                                                     ofType:@"js"];
+    NSString* content = [NSString stringWithContentsOfFile:path
+                                                  encoding:NSUTF8StringEncoding
+                                                     error:NULL];
+    [wkwebview evaluateJavaScript:content completionHandler:nil];
 }
 
 - (void) webViewDidStartLoad:(UIWebView *)webView{
@@ -130,15 +148,16 @@
             [queryStringDictionary setObject:value forKey:key];
         }
 
-        NSString *rawResult = [queryStringDictionary objectForKey:@"testResult"];
+        NSString *rawResult = [queryStringDictionary objectForKey:@"result"];
         NSString *decodedString = [rawResult stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
         
         NSData* jsonData = [decodedString dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *perfResult = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:nil];
         NSString *onloadTime = [perfResult objectForKey:@"onloadTime"];
+        NSString *domreadyTime = [perfResult objectForKey:@"domreadyTime"];
         
         _onloadTime = onloadTime;
-        
+        _domreadyTime = domreadyTime;
     }
     
     return true;
@@ -163,7 +182,8 @@
     
     [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
     
-    [_webview loadRequest:request];
+    //[_webview loadRequest:request];
+    [_wkwebView loadRequest:request];
     
     int seconds = self.duration;
     int _seconds = self.duration;
@@ -180,7 +200,7 @@
             int pass = _seconds*100-timeout;
             int passSeconds = pass/100;
             int passMs = pass % 100;
-            UIImage* image = [self captureScreen:_webview];
+            UIImage* image = [self captureScreen:_wkwebView];
             NSDictionary* obj = @{@"image": image, @"label": [NSString stringWithFormat:@"%.2d''%.2d",passSeconds, passMs]};
             [captureImages addObject:obj];
             
@@ -203,7 +223,7 @@
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 if(needCapture){
-                    UIImage* image = [self captureScreen:_webview];
+                    UIImage* image = [self captureScreen:_wkwebView];
                     NSDictionary* obj = @{@"image": image, @"label": [NSString stringWithFormat:@"%.2d''%.2d",passSeconds, passMs]};
                     [captureImages addObject:obj];
                 }
@@ -230,6 +250,7 @@
         NSDictionary *result = [[NSDictionary alloc] initWithObjectsAndKeys:
                                 captureImages, @"captureImages",
                                 _onloadTime, @"onloadTime",
+                                _domreadyTime, @"domreadyTime",
                                 nil];
         
         
@@ -244,11 +265,15 @@
 
 
 -(UIImage*)captureScreen:(UIView*) viewToCapture{
-    UIGraphicsBeginImageContext(viewToCapture.bounds.size);
+    UIGraphicsBeginImageContext(viewToCapture.frame.size);
+    
     [viewToCapture.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage*viewImage =UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIImage *screenshot = UIGraphicsGetImageFromCurrentImageContext();
+    
     UIGraphicsEndImageContext();
-    return viewImage;
+    
+    return screenshot;
 }
 
 - (IBAction)Back
@@ -265,6 +290,21 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)userContentController:(WKUserContentController *)userContentController
+      didReceiveScriptMessage:(WKScriptMessage *)message {
+    NSDictionary *sentData = (NSDictionary *)message.body;
+    NSString *messageString = sentData[@"result"];
+    NSLog(@"Message received: %@", messageString);
+    
+    
+    NSData* jsonData = [messageString dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *perfResult = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:nil];
+    NSString *onloadTime = [perfResult objectForKey:@"onloadTime"];
+    NSString *domreadyTime = [perfResult objectForKey:@"domreadyTime"];
+    _onloadTime = onloadTime;
+    _domreadyTime = domreadyTime;
 }
 
 /*

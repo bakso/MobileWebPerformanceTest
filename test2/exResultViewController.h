@@ -12,6 +12,7 @@
 
 @property(nonatomic, strong) NSMutableArray* resultImages;
 @property(nonatomic, strong) NSString* onloadTime;
+@property(nonatomic, strong) NSString* domreadyTime;
 @property (nonatomic, strong) IBOutlet UILabel *onloadTimeLabel;
-
+@property (nonatomic, strong) IBOutlet UILabel *domreadyTimeLabel;
 @end

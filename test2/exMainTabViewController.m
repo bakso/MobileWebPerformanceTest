@@ -96,6 +96,7 @@
     id result = [obj object];
     resultViewController.resultImages = [result objectForKey:@"captureImages"];
     resultViewController.onloadTime = [result objectForKey:@"onloadTime"];
+    resultViewController.domreadyTime = [result objectForKey:@"domreadyTime"];
     //UINavigationController* navCtrl = [[UINavigationController alloc] initWithRootViewController:resultViewController];
     
     [self.navigationController pushViewController:resultViewController animated:YES];

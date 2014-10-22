@@ -1,3 +1,5 @@
+
+
 var startTime = Date.now();
 
 var domreadyTime = 0,
@@ -22,9 +24,5 @@ window.addEventListener('load', function(){
 
 function reportBackToObjectiveC(result)
 {
-    var iframe = document.createElement("iframe");
-    iframe.setAttribute("src", 'mwpt://data/?testResult='+encodeURIComponent(JSON.stringify(result)));
-    document.documentElement.appendChild(iframe);
-    iframe.parentNode.removeChild(iframe);
-    iframe = null;
+    window.webkit.messageHandlers.MWPT.postMessage({"result":JSON.stringify(result)});
 }
