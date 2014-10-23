@@ -169,6 +169,38 @@ h1,h2,h3{
     width: 120px;
 }
 
-.loading{
+.mui-loading {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    pointer-events: none;
+    z-index: 1000000;
+}
 
+.mui-loading.show{
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+}
+
+.mui-loading i {
+    display: inline-block;
+    padding: 5px 7px;
+    font-size: 0;
+    background-color: #000;
+    opacity: 0.5;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.mui-loading i::after {
+    content: '';
+    display: inline-block;
+    -webkit-animation: rotate 1s linear infinite;
+    background: url(ajax-loader.gif) no-repeat 50% 50%;
+    width: 24px;
+    height: 24px;
 }

@@ -5,7 +5,6 @@ var startTime = Date.now();
 var domreadyTime = 0,
     onloadTime = 0;
 
-
 document.addEventListener('DOMContentLoaded', function(){
                           domreadyTime = Date.now() - startTime;
                           

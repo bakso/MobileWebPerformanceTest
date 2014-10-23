@@ -13,8 +13,11 @@
 		845DFF2B19E79728005B102A /* qrcode@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 845DFF2A19E79728005B102A /* qrcode@2x.png */; };
 		84624FD019D99EEE00C3256A /* script.js in Sources */ = {isa = PBXBuildFile; fileRef = 84624FCF19D99EEE00C3256A /* script.js */; };
 		84624FD119D9B2EE00C3256A /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = 84624FCF19D99EEE00C3256A /* script.js */; };
+		8470C9EC19F7E78700F34D49 /* webui in Resources */ = {isa = PBXBuildFile; fileRef = 84C79B8819E9162700B8CF01 /* webui */; };
+		8470C9ED19F8066900F34D49 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84E4C4D219975A5300DA64B2 /* Main.storyboard */; };
+		8470C9EF19F8ADFD00F34D49 /* exRunnerManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 8470C9EE19F8ADFD00F34D49 /* exRunnerManager.h */; };
+		8470C9F119F8AFB000F34D49 /* exRunnerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8470C9F019F8AFB000F34D49 /* exRunnerManager.m */; };
 		84BB766319E80E8500BF20BD /* exServerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BB766219E80E8500BF20BD /* exServerViewController.m */; };
-		84C79B8919E9162800B8CF01 /* webui in Resources */ = {isa = PBXBuildFile; fileRef = 84C79B8819E9162700B8CF01 /* webui */; };
 		84E4C4C119975A5300DA64B2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E4C4C019975A5300DA64B2 /* Foundation.framework */; };
 		84E4C4C319975A5300DA64B2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E4C4C219975A5300DA64B2 /* CoreGraphics.framework */; };
 		84E4C4C519975A5300DA64B2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E4C4C419975A5300DA64B2 /* UIKit.framework */; };
@@ -51,9 +54,11 @@
 		845732D419B24BC700D3DF64 /* exResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = exResultViewController.m; sourceTree = "<group>"; };
 		845DFF2A19E79728005B102A /* qrcode@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qrcode@2x.png"; sourceTree = "<group>"; };
 		84624FCF19D99EEE00C3256A /* script.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = script.js; sourceTree = "<group>"; };
+		8470C9EE19F8ADFD00F34D49 /* exRunnerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = exRunnerManager.h; sourceTree = "<group>"; };
+		8470C9F019F8AFB000F34D49 /* exRunnerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = exRunnerManager.m; path = ../exRunnerManager.m; sourceTree = "<group>"; };
 		84BB766119E80E8500BF20BD /* exServerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = exServerViewController.h; sourceTree = "<group>"; };
 		84BB766219E80E8500BF20BD /* exServerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = exServerViewController.m; sourceTree = "<group>"; };
-		84C79B8819E9162700B8CF01 /* webui */ = {isa = PBXFileReference; lastKnownFileType = folder; path = webui; sourceTree = "<group>"; };
+		84C79B8819E9162700B8CF01 /* webui */ = {isa = PBXFileReference; lastKnownFileType = folder; name = webui; path = ../webui; sourceTree = "<group>"; };
 		84E4C4BD19975A5300DA64B2 /* test2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = test2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84E4C4C019975A5300DA64B2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		84E4C4C219975A5300DA64B2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -115,7 +120,6 @@
 		84E4C4B419975A5300DA64B2 = {
 			isa = PBXGroup;
 			children = (
-				84C79B8819E9162700B8CF01 /* webui */,
 				84E4C4C619975A5300DA64B2 /* source */,
 				84E4C4E519975A5300DA64B2 /* test2Tests */,
 				84E4C4BF19975A5300DA64B2 /* Frameworks */,
@@ -148,6 +152,7 @@
 		84E4C4C619975A5300DA64B2 /* source */ = {
 			isa = PBXGroup;
 			children = (
+				84C79B8819E9162700B8CF01 /* webui */,
 				845DFF2A19E79728005B102A /* qrcode@2x.png */,
 				84624FCF19D99EEE00C3256A /* script.js */,
 				843C26DF199A0CEC00711E6A /* stopwatch@2x.png */,
@@ -165,6 +170,8 @@
 				845732D419B24BC700D3DF64 /* exResultViewController.m */,
 				84BB766119E80E8500BF20BD /* exServerViewController.h */,
 				84BB766219E80E8500BF20BD /* exServerViewController.m */,
+				8470C9EE19F8ADFD00F34D49 /* exRunnerManager.h */,
+				8470C9F019F8AFB000F34D49 /* exRunnerManager.m */,
 			);
 			name = source;
 			path = test2;
@@ -281,7 +288,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84C79B8919E9162800B8CF01 /* webui in Resources */,
+				8470C9ED19F8066900F34D49 /* Main.storyboard in Resources */,
+				8470C9EC19F7E78700F34D49 /* webui in Resources */,
 				84624FD119D9B2EE00C3256A /* script.js in Resources */,
 				843C26E0199A0CEC00711E6A /* stopwatch@2x.png in Resources */,
 				843C26D4199A093400711E6A /* servermode@2x.png in Resources */,
@@ -345,7 +353,9 @@
 				84E4C4FA1997788A00DA64B2 /* exRunnerViewController.m in Sources */,
 				84E4C4CD19975A5300DA64B2 /* main.m in Sources */,
 				84BB766319E80E8500BF20BD /* exServerViewController.m in Sources */,
+				8470C9EF19F8ADFD00F34D49 /* exRunnerManager.h in Sources */,
 				84E4C4D119975A5300DA64B2 /* exAppDelegate.m in Sources */,
+				8470C9F119F8AFB000F34D49 /* exRunnerManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,7 +486,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/test2-Prefix.pch";
 				INFOPLIST_FILE = "test2/test2-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -494,7 +504,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/test2-Prefix.pch";
 				INFOPLIST_FILE = "test2/test2-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;

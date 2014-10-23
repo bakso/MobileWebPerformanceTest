@@ -9,6 +9,7 @@
 #import "exServerViewController.h"
 #import "GCDWebServerURLEncodedFormRequest.h"
 #import "exRunnerViewController.h"
+#import "exRunnerManager.h"
 
 @interface exServerViewController ()
 @end
@@ -38,17 +39,43 @@
         if(webServer == nil){
             webServer = [[GCDWebServer alloc] init];
             
+            NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
             
-            NSString *documentRoot = [NSHomeDirectory()
-                                      stringByAppendingPathComponent:@"test2.app/webui/"];
+            NSString *documentRoot = [resourcePath stringByAppendingPathComponent:@"/webui"];
             
             [webServer addGETHandlerForBasePath:@"/" directoryPath:documentRoot indexFilename:@"index.html" cacheAge:0 allowRangeRequests:YES];
             
+            [webServer addHandlerForMethod:@"GET"
+                                      path:@"/status"
+                                      requestClass:[GCDWebServerRequest class]
+                                      processBlock:^GCDWebServerResponse *(GCDWebServerRequest* request) {
+                                          BOOL working = [exRunnerManager getWorkingStatus];
+                                          NSString *status;
+                                          if(working){
+                                              status = @"Working";
+                                          }else{
+                                              status = @"Idle";
+                                          }
+                                          
+                                          NSDictionary *res = [[NSDictionary alloc] initWithObjectsAndKeys:status, @"working", nil];
+                                  
+                                          return [GCDWebServerDataResponse responseWithJSONObject:res];
+                                      }];
             
             [webServer addHandlerForMethod:@"POST"
                                       path:@"/"
                               requestClass:[GCDWebServerURLEncodedFormRequest class]
                               asyncProcessBlock:^(GCDWebServerRequest* request, GCDWebServerCompletionBlock completionBlock) {
+                                  
+                                  if([exRunnerManager getWorkingStatus] == YES){
+                                      NSDictionary *result = [[NSDictionary alloc] initWithObjectsAndKeys:@"There's task before, please wait until device idle.", @"errMsg", nil];
+                                      GCDWebServerDataResponse* response = [GCDWebServerDataResponse responseWithJSONObject:result];
+                                      completionBlock(response);
+                                      return;
+                                  }
+                                  
+                                  [exRunnerManager setWorkingStatus:YES];
+                                  
                                   
                                   NSDictionary *queryString = [(GCDWebServerURLEncodedFormRequest*)request arguments];
                                   
@@ -60,10 +87,12 @@
                                   
                                   [[NSNotificationCenter defaultCenter] addObserverForName:@"webTaskRunEnd" object:nil queue:nil usingBlock:^(NSNotification* obj){
                                       
+                                      
                                       id res = [obj object];
                                       NSString *onloadTime = [res objectForKey:@"onloadTime"];
+                                      NSString *domreadyTime = [res objectForKey:@"domreadyTime"];
                                       
-                                      NSMutableDictionary *result = [[NSMutableDictionary alloc] initWithObjectsAndKeys:onloadTime, @"onloadTime", nil];
+                                      NSMutableDictionary *result = [[NSMutableDictionary alloc] initWithObjectsAndKeys:onloadTime, @"onloadTime", domreadyTime, @"domreadyTime", nil];
                                       
                                       NSMutableArray *images = [[NSMutableArray alloc] init];
                                       
@@ -86,10 +115,10 @@
                                       
                                       GCDWebServerDataResponse* response = [GCDWebServerDataResponse responseWithJSONObject:result];
                                       
+                                      
                                       completionBlock(response);
                                   }];
                                   
-                                  //[formatSpace floatValue]
                               }];
         }
         

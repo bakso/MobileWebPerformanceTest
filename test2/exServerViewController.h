@@ -12,8 +12,8 @@
 
 @interface exServerViewController : UIViewController<UIApplicationDelegate>
 
-@property (weak, nonatomic) IBOutlet UIButton *startBtn;
+@property (strong, nonatomic) IBOutlet UIButton *startBtn;
 @property (strong, nonatomic) GCDWebServer* webServer;
-@property (weak, nonatomic) IBOutlet UILabel *serverStartAt;
-@property (weak, nonatomic) IBOutlet UILabel *address;
+@property (strong, nonatomic) IBOutlet UILabel *serverStartAt;
+@property (strong, nonatomic) IBOutlet UILabel *address;
 @end

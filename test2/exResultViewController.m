@@ -57,7 +57,8 @@
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, viewWidth, viewHeight)];
     
     scrollView.delegate = self;
-    [scrollView setBackgroundColor:[UIColor lightGrayColor]];
+    
+    [scrollView setBackgroundColor:[[UIColor alloc] initWithRed:0.9 green:0.9 blue:0.9 alpha:1]];
     
     self.scrollView.contentSize = CGSizeMake(singleViewWidth*count, viewHeight);
     
@@ -90,11 +91,11 @@
     [topScrollView addSubview:scrollView];
     [self.view addSubview:topScrollView];
     
-    _domreadyTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(txMgLeft, viewHeight,  200, 36)];
+    _domreadyTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(txMgLeft, viewHeight+5,  300, 28)];
     _domreadyTimeLabel.text = [NSString stringWithFormat:@"DOM Ready Time: %@ms", _domreadyTime];
     [topScrollView addSubview:_domreadyTimeLabel];
     
-    _onloadTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(txMgLeft, viewHeight+36,  200, 36)];
+    _onloadTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(txMgLeft, viewHeight+5+28,  300, 28)];
     _onloadTimeLabel.text = [NSString stringWithFormat:@"Onload Time: %@ms", _onloadTime];
     [topScrollView addSubview:_onloadTimeLabel];
 }

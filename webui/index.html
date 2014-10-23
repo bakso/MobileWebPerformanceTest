@@ -28,7 +28,7 @@
 
                 <label>
                     <span>Shot interval:</span>
-                    <input id="J_ShotInterval" name="interval" type="text" value="0.5" required placeholder="shot interval in second" />
+                    <input id="J_ShotInterval" name="interval" type="text" value="0.2" required placeholder="shot interval in second" />
                 </label>
 
                 <label>
@@ -49,58 +49,9 @@
             <h1>
                 Test Result
             </h1>
-            <h3>Onload Time: <span id="J_OnloadTime">444</span>ms</h3>
+            <h3>Onload Time: <span id="J_OnloadTime">-</span>ms&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DOM Ready Time: <span id="J_DOMReadyTime">-</span>ms</h3>
             <div class="scrollView">
                 <ul class="imageList">
-                    <li>
-                        <div class="imgBox"><img src="http://gtms04.alicdn.com/tps/i4/TB1lC4oGpXXXXXJXpXX6Cwu2XXX-398-510.jpg" alt=""/></div>
-                        <div class="label">sss</div>
-                    </li>
-                    <li>
-                        <div class="imgBox"><img src="http://gtms04.alicdn.com/tps/i4/TB1lC4oGpXXXXXJXpXX6Cwu2XXX-398-510.jpg" alt=""/></div>
-                        <div class="label">sss</div>
-                    </li>
-                    <li>
-                        <div class="imgBox"><img src="http://gtms04.alicdn.com/tps/i4/TB1lC4oGpXXXXXJXpXX6Cwu2XXX-398-510.jpg" alt=""/></div>
-                        <div class="label">sss</div>
-                    </li>
-                    <li>
-                        <div class="imgBox"><img src="http://gtms04.alicdn.com/tps/i4/TB1lC4oGpXXXXXJXpXX6Cwu2XXX-398-510.jpg" alt=""/></div>
-                        <div class="label">sss</div>
-                    </li>
-                    <li>
-                        <div class="imgBox"><img src="http://gtms04.alicdn.com/tps/i4/TB1lC4oGpXXXXXJXpXX6Cwu2XXX-398-510.jpg" alt=""/></div>
-                        <div class="label">sss</div>
-                    </li>
-                    <li>
-                        <div class="imgBox"><img src="http://gtms04.alicdn.com/tps/i4/TB1lC4oGpXXXXXJXpXX6Cwu2XXX-398-510.jpg" alt=""/></div>
-                        <div class="label">sss</div>
-                    </li>
-                    <li>
-                        <div class="imgBox"><img src="http://gtms04.alicdn.com/tps/i4/TB1lC4oGpXXXXXJXpXX6Cwu2XXX-398-510.jpg" alt=""/></div>
-                        <div class="label">sss</div>
-                    </li>
-                    <li>
-                        <div class="imgBox"><img src="http://gtms04.alicdn.com/tps/i4/TB1lC4oGpXXXXXJXpXX6Cwu2XXX-398-510.jpg" alt=""/></div>
-                        <div class="label">sss</div>
-                    </li>
-
-                    <li>
-                        <div class="imgBox"><img src="http://gtms04.alicdn.com/tps/i4/TB1lC4oGpXXXXXJXpXX6Cwu2XXX-398-510.jpg" alt=""/></div>
-                        <div class="label">sss</div>
-                    </li>
-                    <li>
-                        <div class="imgBox"><img src="http://gtms04.alicdn.com/tps/i4/TB1lC4oGpXXXXXJXpXX6Cwu2XXX-398-510.jpg" alt=""/></div>
-                        <div class="label">sss</div>
-                    </li>
-                    <li>
-                        <div class="imgBox"><img src="http://gtms04.alicdn.com/tps/i4/TB1lC4oGpXXXXXJXpXX6Cwu2XXX-398-510.jpg" alt=""/></div>
-                        <div class="label">sss</div>
-                    </li>
-                    <li>
-                        <div class="imgBox"><img src="http://gtms04.alicdn.com/tps/i4/TB1lC4oGpXXXXXJXpXX6Cwu2XXX-398-510.jpg" alt=""/></div>
-                        <div class="label">sss</div>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -113,11 +64,11 @@
     <div class="basic-grey">
         <h1>Device Status </h1>
 
-        <h4>device idle : <span class="J_idelIndicator">-</span></h4>
+        <h4>device idle : <span id="J_IdelIndicator">-</span></h4>
 
         <label>
             <span>&nbsp;</span>
-            <input type="button" class="button J_queryBtn" value="Update" />
+            <input type="button" class="button" id="J_QueryBtn" value="Update" />
         </label>
     </div>
 </div>
@@ -128,7 +79,7 @@
 </script>
 
 
-<div class="loading" id="J_Loading"></div>
+<div class="mui-loading" id="J_Loading"><i></i></div>
 
 <script src="./jquery.js"></script>
 <script src="./index.js"></script>

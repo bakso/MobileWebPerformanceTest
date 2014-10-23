@@ -12,6 +12,7 @@
 
 #import "exRunnerViewController.h"
 #import "exResultViewController.h"
+#import "exRunnerManager.h"
 
 
 @interface exRunnerViewController ()
@@ -78,16 +79,22 @@
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.automaticallyAdjustsScrollViewInsets = false; //否则webview会自动留白边
     
-    WKWebViewConfiguration *theConfiguration =
-    [[WKWebViewConfiguration alloc] init];
-    [theConfiguration.userContentController
-     addScriptMessageHandler:self name:@"MWPT"];
+    WKWebViewConfiguration *theConfiguration =[[WKWebViewConfiguration alloc] init];
+    [theConfiguration.userContentController addScriptMessageHandler:self name:@"MWPT"];
+    
+//    NSString* path = [[NSBundle mainBundle] pathForResource:@"script"
+//                                                     ofType:@"js"];
+//    NSString* contents = [NSString stringWithContentsOfFile:path
+//                                                  encoding:NSUTF8StringEncoding
+//                                                     error:NULL];
+//    WKUserScript *script = [[WKUserScript alloc] initWithSource:contents injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:true ];
+//    [theConfiguration.userContentController addUserScript:script];
     
     _wkwebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, STATUSBAR_HEIGHT, _windowSize.width, _windowSize.height-STATUSBAR_HEIGHT) configuration:theConfiguration];
     _wkwebView.navigationDelegate = self;
     
-    _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, STATUSBAR_HEIGHT, _windowSize.width, _windowSize.height-STATUSBAR_HEIGHT)];
-    _webview.delegate = self;
+//    _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, STATUSBAR_HEIGHT, _windowSize.width, _windowSize.height-STATUSBAR_HEIGHT)];
+//    _webview.delegate = self;
     
     //[self.view addSubview:_webview];
     [self.view addSubview:_wkwebView];
@@ -121,47 +128,47 @@
     [wkwebview evaluateJavaScript:content completionHandler:nil];
 }
 
-- (void) webViewDidStartLoad:(UIWebView *)webView{
-    NSString* path = [[NSBundle mainBundle] pathForResource:@"script"
-                                                     ofType:@"js"];
-    NSString* content = [NSString stringWithContentsOfFile:path
-                                                  encoding:NSUTF8StringEncoding
-                                                     error:NULL];    
-    [_webview stringByEvaluatingJavaScriptFromString:content];
-}
+//- (void) webViewDidStartLoad:(UIWebView *)webView{
+//    NSString* path = [[NSBundle mainBundle] pathForResource:@"script"
+//                                                     ofType:@"js"];
+//    NSString* content = [NSString stringWithContentsOfFile:path
+//                                                  encoding:NSUTF8StringEncoding
+//                                                     error:NULL];    
+//    [_webview stringByEvaluatingJavaScriptFromString:content];
+//}
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    NSString* rurl=[[request URL] absoluteString];
-    if ([rurl hasPrefix:@"mwpt://"]) {
-        NSLog(@"ssss%@",rurl);
-        NSURL *url = [NSURL URLWithString:rurl];
-        NSString *query = [url query];
-        NSMutableDictionary *queryStringDictionary = [[NSMutableDictionary alloc] init];
-        NSArray *urlComponents = [query componentsSeparatedByString:@"&"];
-        for (NSString *keyValuePair in urlComponents)
-        {
-            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-            NSString *key = [pairComponents objectAtIndex:0];
-            NSString *value = [pairComponents objectAtIndex:1];
-            
-            [queryStringDictionary setObject:value forKey:key];
-        }
-
-        NSString *rawResult = [queryStringDictionary objectForKey:@"result"];
-        NSString *decodedString = [rawResult stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
-        
-        NSData* jsonData = [decodedString dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *perfResult = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:nil];
-        NSString *onloadTime = [perfResult objectForKey:@"onloadTime"];
-        NSString *domreadyTime = [perfResult objectForKey:@"domreadyTime"];
-        
-        _onloadTime = onloadTime;
-        _domreadyTime = domreadyTime;
-    }
-    
-    return true;
-}
+//- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+//{
+//    NSString* rurl=[[request URL] absoluteString];
+//    if ([rurl hasPrefix:@"mwpt://"]) {
+//        NSLog(@"ssss%@",rurl);
+//        NSURL *url = [NSURL URLWithString:rurl];
+//        NSString *query = [url query];
+//        NSMutableDictionary *queryStringDictionary = [[NSMutableDictionary alloc] init];
+//        NSArray *urlComponents = [query componentsSeparatedByString:@"&"];
+//        for (NSString *keyValuePair in urlComponents)
+//        {
+//            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+//            NSString *key = [pairComponents objectAtIndex:0];
+//            NSString *value = [pairComponents objectAtIndex:1];
+//            
+//            [queryStringDictionary setObject:value forKey:key];
+//        }
+//
+//        NSString *rawResult = [queryStringDictionary objectForKey:@"result"];
+//        NSString *decodedString = [rawResult stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+//        
+//        NSData* jsonData = [decodedString dataUsingEncoding:NSUTF8StringEncoding];
+//        NSDictionary *perfResult = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:nil];
+//        NSString *onloadTime = [perfResult objectForKey:@"onloadTime"];
+//        NSString *domreadyTime = [perfResult objectForKey:@"domreadyTime"];
+//        
+//        _onloadTime = onloadTime;
+//        _domreadyTime = domreadyTime;
+//    }
+//    
+//    return true;
+//}
 
 
 - (void) onAbortClick:(id)sender{
@@ -170,7 +177,7 @@
 }
 
 - (void) startTask
-{
+{    
     
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     [[NSURLCache sharedURLCache] setDiskCapacity:0];
@@ -246,6 +253,7 @@
 
     
     //[self presentViewController:resultViewController animated:YES completion:nil];
+    [exRunnerManager setWorkingStatus:NO];
     [self dismissViewControllerAnimated: YES completion:^{
         NSDictionary *result = [[NSDictionary alloc] initWithObjectsAndKeys:
                                 captureImages, @"captureImages",
@@ -259,7 +267,6 @@
         }else{
             [[NSNotificationCenter defaultCenter] postNotificationName:@"webTaskRunEnd" object:result];
         }
-       
     }];
 }
 

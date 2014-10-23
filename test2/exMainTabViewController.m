@@ -9,6 +9,7 @@
 #import "exMainTabViewController.h"
 #import "exRunnerViewController.h"
 #import "exResultViewController.h"
+#import "exRunnerManager.h"
 
 @implementation exMainTabViewController
 
@@ -79,6 +80,8 @@
 
 
 - (void) runTest{
+    [exRunnerManager setWorkingStatus:YES];
+    
     UIStoryboard *board=[UIStoryboard storyboardWithName:@"Main"bundle:nil];
     exRunnerViewController *runnerView =[board instantiateViewControllerWithIdentifier:@"runner"];
     runnerView.url = _urlTextField.text;
