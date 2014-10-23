@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C409AFA0-599D-485A-9FA5-08219C4455E7</string>
+	<key>IDESourceControlProjectName</key>
+	<string>MobileWebPerformanceTest</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>C046C371-D657-4F63-9F26-95EFD3F041DB</key>
+		<string>ssh://gitlab.alibaba-inc.com/tap/mobilewebperformancetest.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>MobileWebPerformanceTest.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>C046C371-D657-4F63-9F26-95EFD3F041DB</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://gitlab.alibaba-inc.com/tap/mobilewebperformancetest.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C046C371-D657-4F63-9F26-95EFD3F041DB</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C046C371-D657-4F63-9F26-95EFD3F041DB</string>
+			<key>IDESourceControlWCCName</key>
+			<string>test2</string>
+		</dict>
+	</array>
+</dict>
+</plist>
