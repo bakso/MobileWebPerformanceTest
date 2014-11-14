@@ -14,7 +14,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property CGFloat btmHeight;
 @property UIView* btmBar;
+
 @end
+
+
 
 @implementation exResultViewController
 
@@ -23,6 +26,15 @@
 @synthesize topScrollView;
 @synthesize btmHeight;
 @synthesize btmBar;
+
+-(BOOL)shouldAutorotate{
+    return YES;
+}
+
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskAll;
+}
+
 
 
 -(id) initWithResultImages: (NSMutableArray*) images{
@@ -33,13 +45,18 @@
     return self;
 }
 
-
+-(void) popupViewC{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    int count = resultImages.count;
+    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(popupViewC)];
+    self.navigationItem.leftBarButtonItem = anotherButton;
+    
+    NSUInteger count = resultImages.count;
     // Do any additional setup after loading the view.
     CGFloat viewWidth = 320;
     CGFloat viewHeight = 245;
@@ -104,18 +121,44 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void) viewWillAppear:(BOOL)animated{
-    
+-(void)resetScrollContainer{
+    CGSize sizeOfScreen = [[UIScreen mainScreen] bounds].size;
+    [topScrollView setFrame:CGRectMake(0, 0, sizeOfScreen.width, sizeOfScreen.height)];
+    [scrollView setFrame:CGRectMake(0, 0, sizeOfScreen.width, 245)];
 }
 
 
 -(void) viewDidAppear:(BOOL)animated{
-    [topScrollView setFrame:CGRectMake(0, 0, 320, self.view.window.bounds.size.height-50)];
-//    btmBar = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.window.bounds.size.height-btmHeight, self.view.window.bounds.size.width, btmHeight)];
-//    
-//    
-//    btmBar.backgroundColor = [UIColor lightGrayColor];
-//    [self.view addSubview:btmBar];
+    [self resetScrollContainer];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
+}
+
+- (void)orientationChanged:(NSNotification *)notification{
+    [self adjustViewsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+}
+
+- (void) adjustViewsForOrientation:(UIInterfaceOrientation) orientation {
+    
+    [self resetScrollContainer];
+    
+//    switch (orientation)
+//    {
+//        case UIInterfaceOrientationPortrait:
+//        case UIInterfaceOrientationPortraitUpsideDown:
+//        {
+//            //load the portrait view
+//        }
+//            
+//            break;
+//        case UIInterfaceOrientationLandscapeLeft:
+//        case UIInterfaceOrientationLandscapeRight:
+//        {
+//            //load the landscape view
+//        }
+//            break;
+//        case UIInterfaceOrientationUnknown:break;
+//    }
 }
 
 

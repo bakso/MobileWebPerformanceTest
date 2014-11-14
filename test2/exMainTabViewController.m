@@ -17,6 +17,14 @@
 @synthesize results;
 
 
+-(BOOL)shouldAutorotate{
+    return NO;
+}
+
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -60,6 +68,8 @@
     
 }
 
+
+
 -(void) syncDurationLabel{
     NSString* text = [NSString stringWithFormat:@"%d", (int)self.duration.value];
     self.durationLabel.text = [text stringByAppendingString: @"s"];
@@ -100,11 +110,13 @@
     resultViewController.resultImages = [result objectForKey:@"captureImages"];
     resultViewController.onloadTime = [result objectForKey:@"onloadTime"];
     resultViewController.domreadyTime = [result objectForKey:@"domreadyTime"];
-    //UINavigationController* navCtrl = [[UINavigationController alloc] initWithRootViewController:resultViewController];
+    UINavigationController* navCtrl = [[UINavigationController alloc] initWithRootViewController:resultViewController];
+    [self presentViewController:navCtrl animated:YES completion:nil];
     
-    [self.navigationController pushViewController:resultViewController animated:YES];
     
-    //[self presentViewController:navCtrl animated:YES completion:nil];
+    //[self.navigationController pushViewController:resultViewController animated:YES];
+    
+    
 }
 
 - (IBAction)onClick:(id)sender {
@@ -117,11 +129,14 @@
     return YES;
 }
 
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 /*
 #pragma mark - Navigation

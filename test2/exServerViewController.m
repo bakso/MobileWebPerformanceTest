@@ -20,6 +20,13 @@
 @synthesize address;
 
 
+-(BOOL)shouldAutorotate{
+    return NO;
+}
+
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

@@ -18,6 +18,9 @@
 		8470C9EF19F8ADFD00F34D49 /* exRunnerManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 8470C9EE19F8ADFD00F34D49 /* exRunnerManager.h */; };
 		8470C9F519F8D84200F34D49 /* exRunnerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8470C9F419F8D84200F34D49 /* exRunnerManager.m */; };
 		84BB766319E80E8500BF20BD /* exServerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BB766219E80E8500BF20BD /* exServerViewController.m */; };
+		84CE1E5E1A023D2E00080464 /* ExUINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CE1E5D1A023D2E00080464 /* ExUINavigationController.m */; };
+		84CE1E611A02853800080464 /* ExUITabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CE1E601A02853800080464 /* ExUITabBarController.m */; };
+		84CE1E641A028DF100080464 /* ExServerUINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CE1E631A028DF100080464 /* ExServerUINavigationController.m */; };
 		84E4C4C119975A5300DA64B2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E4C4C019975A5300DA64B2 /* Foundation.framework */; };
 		84E4C4C319975A5300DA64B2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E4C4C219975A5300DA64B2 /* CoreGraphics.framework */; };
 		84E4C4C519975A5300DA64B2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E4C4C419975A5300DA64B2 /* UIKit.framework */; };
@@ -59,6 +62,12 @@
 		84BB766119E80E8500BF20BD /* exServerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = exServerViewController.h; sourceTree = "<group>"; };
 		84BB766219E80E8500BF20BD /* exServerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = exServerViewController.m; sourceTree = "<group>"; };
 		84C79B8819E9162700B8CF01 /* webui */ = {isa = PBXFileReference; lastKnownFileType = folder; name = webui; path = ../webui; sourceTree = "<group>"; };
+		84CE1E5C1A023D2E00080464 /* ExUINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExUINavigationController.h; sourceTree = "<group>"; };
+		84CE1E5D1A023D2E00080464 /* ExUINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExUINavigationController.m; sourceTree = "<group>"; };
+		84CE1E5F1A02853800080464 /* ExUITabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExUITabBarController.h; sourceTree = "<group>"; };
+		84CE1E601A02853800080464 /* ExUITabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExUITabBarController.m; sourceTree = "<group>"; };
+		84CE1E621A028DF100080464 /* ExServerUINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExServerUINavigationController.h; sourceTree = "<group>"; };
+		84CE1E631A028DF100080464 /* ExServerUINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExServerUINavigationController.m; sourceTree = "<group>"; };
 		84E4C4BD19975A5300DA64B2 /* test2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = test2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84E4C4C019975A5300DA64B2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		84E4C4C219975A5300DA64B2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -172,6 +181,12 @@
 				84BB766119E80E8500BF20BD /* exServerViewController.h */,
 				84BB766219E80E8500BF20BD /* exServerViewController.m */,
 				8470C9EE19F8ADFD00F34D49 /* exRunnerManager.h */,
+				84CE1E5C1A023D2E00080464 /* ExUINavigationController.h */,
+				84CE1E5D1A023D2E00080464 /* ExUINavigationController.m */,
+				84CE1E5F1A02853800080464 /* ExUITabBarController.h */,
+				84CE1E601A02853800080464 /* ExUITabBarController.m */,
+				84CE1E621A028DF100080464 /* ExServerUINavigationController.h */,
+				84CE1E631A028DF100080464 /* ExServerUINavigationController.m */,
 			);
 			name = source;
 			path = test2;
@@ -347,6 +362,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84CE1E5E1A023D2E00080464 /* ExUINavigationController.m in Sources */,
 				845732D519B24BC700D3DF64 /* exResultViewController.m in Sources */,
 				84624FD019D99EEE00C3256A /* script.js in Sources */,
 				84E4C4F719976E8C00DA64B2 /* exMainTabViewController.m in Sources */,
@@ -356,6 +372,8 @@
 				8470C9F519F8D84200F34D49 /* exRunnerManager.m in Sources */,
 				8470C9EF19F8ADFD00F34D49 /* exRunnerManager.h in Sources */,
 				84E4C4D119975A5300DA64B2 /* exAppDelegate.m in Sources */,
+				84CE1E641A028DF100080464 /* ExServerUINavigationController.m in Sources */,
+				84CE1E611A02853800080464 /* ExUITabBarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

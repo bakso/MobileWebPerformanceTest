@@ -19,8 +19,6 @@
 @property CGSize windowSize;
 @property UILabel* label;
 @property UIButton* btn;
-
-
 @end
 
 
@@ -42,6 +40,14 @@
 @synthesize btn;
 @synthesize captureImages;
 @synthesize parentViewCtrl;
+
+-(BOOL)shouldAutorotate{
+    return NO;
+}
+
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
 
 - (void)viewDidLoad
 {
@@ -212,7 +218,7 @@
             [captureImages addObject:obj];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSLog(@"capture image number:%d", captureImages.count);
+                NSLog(@"capture image number:%lu", (unsigned long)captureImages.count);
                 [self endTask];
                 
             });
